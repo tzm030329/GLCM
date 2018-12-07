@@ -9,6 +9,7 @@ Clone or download fast_glcm.py. Use scripts as follows.
 
 ```python
 import fast_glcm
+from skimage import data
 
 if __name__ == '__main__':
     img = data.camera()
