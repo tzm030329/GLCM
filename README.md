@@ -3,7 +3,7 @@ Fast Gray-Level Co-Occurrence Matrix (GLCM) by numpy. This script calculates GLC
 
 ![img](./img/output.jpg)
 
-##Usage
+## Usage
 
 Clone or download fast_glcm.py. Use scripts as follows.
 
