@@ -13,6 +13,5 @@ from skimage import data
 
 if __name__ == '__main__':
     img = data.camera()
-    h,w = img.shape
     glcm_mean = fast_glcm.fast_glcm_mean(img)
 ```
