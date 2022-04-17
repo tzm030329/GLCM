@@ -25,6 +25,7 @@ if __name__ == '__main__':
     ent = fast_glcm.fast_glcm_entropy(img)
 
     plt.figure(figsize=(10,4.5))
+    plt.rcParams['image.cmap'] = 'inferno'
     fs = 15
     plt.subplot(2,5,1)
     plt.tick_params(labelbottom=False, labelleft=False)
