@@ -58,6 +58,7 @@ def fast_glcm(img, vmin=0, vmax=255, levels=8, kernel_size=5, distance=1.0, angl
             glcm[i,j, mask] = 1
 
     kernel = np.ones((ks, ks), dtype=np.uint8)
+
     for i in range(levels):
         for j in range(levels):
             glcm[i,j] = cv2.filter2D(glcm[i,j], -1, kernel)
@@ -66,12 +67,17 @@ def fast_glcm(img, vmin=0, vmax=255, levels=8, kernel_size=5, distance=1.0, angl
     return glcm
 
 
-def fast_glcm_mean(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_mean(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm mean
     '''
     h,w = img.shape
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+    
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     mean = np.zeros((h,w), dtype=np.float32)
     for i in range(levels):
         for j in range(levels):
@@ -80,12 +86,17 @@ def fast_glcm_mean(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.
     return mean
 
 
-def fast_glcm_std(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_std(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm std
     '''
     h,w = img.shape
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     mean = np.zeros((h,w), dtype=np.float32)
     for i in range(levels):
         for j in range(levels):
@@ -100,12 +111,17 @@ def fast_glcm_std(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0
     return std
 
 
-def fast_glcm_contrast(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_contrast(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm contrast
     '''
+
     h,w = img.shape
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     cont = np.zeros((h,w), dtype=np.float32)
     for i in range(levels):
         for j in range(levels):
@@ -114,12 +130,17 @@ def fast_glcm_contrast(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angl
     return cont
 
 
-def fast_glcm_dissimilarity(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_dissimilarity(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm dissimilarity
     '''
     h,w = img.shape
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     diss = np.zeros((h,w), dtype=np.float32)
     for i in range(levels):
         for j in range(levels):
@@ -128,12 +149,17 @@ def fast_glcm_dissimilarity(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0,
     return diss
 
 
-def fast_glcm_homogeneity(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_homogeneity(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm homogeneity
     '''
     h,w = img.shape
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     homo = np.zeros((h,w), dtype=np.float32)
     for i in range(levels):
         for j in range(levels):
@@ -142,35 +168,50 @@ def fast_glcm_homogeneity(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, a
     return homo
 
 
-def fast_glcm_ASM(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_ASM(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm asm, energy
     '''
     h,w = img.shape
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     asm = np.zeros((h,w), dtype=np.float32)
     for i in range(levels):
         for j in range(levels):
             asm  += glcm[i,j]**2
 
     ene = np.sqrt(asm)
-    return asm, ene
+    return asm#, ene
 
 
-def fast_glcm_max(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_max(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm max
     '''
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+        
     max_  = np.max(glcm, axis=(0,1))
     return max_
 
 
-def fast_glcm_entropy(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0):
+def fast_glcm_entropy(img, vmin=0, vmax=255, levels=8, ks=5, distance=1.0, angle=0.0, precalculated_glcm=None):
     '''
     calc glcm entropy
     '''
-    glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
+    if precalculated_glcm: 
+        glcm, vmin, vmax, levels, ks, distance, angle = precalculated_glcm
+    else:
+        glcm = fast_glcm(img, vmin, vmax, levels, ks, distance, angle)
+
     pnorm = glcm / np.sum(glcm, axis=(0,1)) + 1./ks**2
     ent  = np.sum(-pnorm * np.log(pnorm), axis=(0,1))
     return ent
